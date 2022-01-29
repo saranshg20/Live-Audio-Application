@@ -1,27 +1,27 @@
 package com.example.android.livestream;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.livestream.databinding.ActivityMainBinding;
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
-import java.io.BufferedReader;
-
-public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getName();
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView frameRate;
     private TextView burstRate;
     private Button button ;
+    private static final int AUDIO_EFFECT_REQUEST = 0;
     private boolean isPlaying = false;
     private boolean isOutputAudioDeviceConnected = false;
     private RadioButton aAudio, openSL_ES;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         aAudio.setEnabled(false);
         openSL_ES.setEnabled(false);
         statusText = (TextView) findViewById(R.id.status_text_view);
-        statusText.setText("Playing Engine");
+        statusText.setText("Please connect to any external bluetooth/wired headset to live stream audio");
         latencyText = (TextView)findViewById(R.id.latency_value);
         frameRate = (TextView) findViewById(R.id.default_frame_rate_value);
         burstRate = (TextView) findViewById(R.id.default_frame_burst_value);
@@ -106,12 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleEffect() {
         if(button.getText()=="Play"){
-            startStream();
+            startEffect();
             button.setText("Stop");
             statusText.setText("Streaming...");
         }
         else{
-            flushStream();
+            stopEffect();
             button.setText("Play");
             statusText.setText("Press Play Button to live stream audio");
         }
@@ -162,7 +163,93 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        native_create();
+    }
+    @Override
+    protected void onPause() {
+        stopEffect();
+        native_delete();
+        super.onPause();
+    }
+
+
+    private void startEffect() {
+        Log.d(TAG, "Attempting to start");
+
+        if (!isRecordPermissionGranted()){
+            requestRecordPermission();
+            return;
+        }
+
+        boolean success = native_setEffectOn(true);
+        if (success) {
+//            statusText.setText(R.string.status_playing);
+//            button.setText(R.string.stop_effect);
+            isPlaying = true;
+        } else {
+//            statusText.setText(R.string.status_open_failed);
+            isPlaying = false;
+        }
+    }
+
+    private boolean isRecordPermissionGranted() {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
+                PackageManager.PERMISSION_GRANTED);
+    }
+
+
+    private void stopEffect() {
+        Log.d(TAG, "Playing, attempting to stop");
+        native_setEffectOn(false);
+        resetStatusView();
+        button.setText(R.string.start_effect);
+        isPlaying = false;
+    }
+
+    private void requestRecordPermission(){
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{Manifest.permission.RECORD_AUDIO},
+                AUDIO_EFFECT_REQUEST);
+    }
+
+    private void resetStatusView() {
+        statusText.setText(R.string.status_reset);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        if (AUDIO_EFFECT_REQUEST != requestCode) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        if (grantResults.length != 1 ||
+                grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+            // User denied the permission, without this we cannot record audio
+            // Show a toast and update the status accordingly
+            statusText.setText(R.string.status_record_audio_denied);
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.need_record_audio_permission),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            // Permission was granted, start live effect
+            toggleEffect();
+        }
+    }
     private native void native_setDefaultStreamValues(int defaultSampleRate, int defaultFramesPerBurst);
 
     private native void native_setRecordingDeviceId(int typeBleHeadset);
@@ -171,9 +258,16 @@ public class MainActivity extends AppCompatActivity {
 
     private native void native_create();
 
-    private native void startStream();
+    private native void native_delete();
 
-    private native void flushStream();
+    private native boolean native_setEffectOn(boolean b);
+
+}
+
+
+
+
+
 //    private native void native_setAudioApi();
 
     /**
@@ -181,4 +275,3 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
 //    public native String stringFromJNI();
-}

@@ -3,4 +3,11 @@
     <string name="apiSelection">Audio API:</string>
     <string name="aaudio">AAudio</string>
     <string name="sles">OpenSL_ES</string>
+    <string name="start_effect">Play</string>
+    <string name="status_record_audio_denied">Audio Recording Permissions Denied!</string>
+    <string name="need_record_audio_permission">Audio Recording Permissions Required.</string>
+    <string name="status_reset">Press Play button to live stream</string>
+    <string name="status_open_failed">Failed to open the Stream</string>
+    <string name="stop_effect">Stop</string>
+    <string name="status_playing">Streaming..</string>
 </resources>
