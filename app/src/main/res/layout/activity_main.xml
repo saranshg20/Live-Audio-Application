@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/recDeviceLabel"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginTop="@dimen/activity_vertical_margin"-->
+        <!--        android:text="@string/recording_device"-->
+        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--    <androidx.appcompat.widget.AppCompatSpinner-->
+        <!--        android:id="@+id/recording_devices_spinner"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginTop="0dp"-->
+        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--        app:layout_constraintTop_toBottomOf="@+id/recDeviceLabel" />-->
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/playbackDeviceLabel"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginTop="@dimen/activity_vertical_margin"-->
+        <!--        android:text="@string/recording_device"-->
+        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent" >-->
+
+        <!--    </TextView>-->
+
+        <!--    <androidx.appcompat.widget.AppCompatSpinner-->
+        <!--        android:id="@+id/playback_devices_spinner"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--        android:layout_marginTop="0dp"-->
+        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--        app:layout_constraintTop_toBottomOf="@+id/recDeviceLabel" />-->
+
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/apiSelectionGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/playback_devices_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/apiTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="@string/apiSelection" />
+
+            <RadioButton
+                android:id="@+id/aaudioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="@string/aaudio" />
+
+            <RadioButton
+                android:id="@+id/slesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="@string/sles" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/latency_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text = "latency:"
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewEnd"
+                />
+            <TextView
+                android:id="@+id/latency_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text = "1.25ms"
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewStart"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/default_frame_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text = "Default Frame Rate: "
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewEnd"
+                />
+            <TextView
+                android:id="@+id/default_frame_rate_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text = "1.25ms"
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewStart"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/default_frame_burst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text = "Default Frame Burst:"
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewEnd"
+                />
+            <TextView
+                android:id="@+id/default_frame_burst_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text = "1.25ms"
+                android:textSize="22sp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="8dp"
+                android:textAlignment="viewStart"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Play"
+            android:layout_marginVertical="16dp"
+            android:layout_marginHorizontal="8dp"
+            android:shadowRadius="@android:integer/config_longAnimTime"
+            />
+        <TextView
+            android:id="@+id/status_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text = "STATUS"
+            android:textSize="14sp"
+            android:paddingVertical="16dp"
+            android:textAlignment="center"
+            />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
