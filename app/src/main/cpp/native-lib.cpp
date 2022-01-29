@@ -100,17 +100,19 @@ Java_com_example_android_livestream_MainActivity_startStream(JNIEnv *env, jobjec
 //        if(result!=oboe::Result::OK){
 //            break;
 //        }
-//        frameRead = result.value();
-//    } while (frameRead!=0);
-//
-//    while(true){
-//        result = mOutputStream->write(myBuffer, requestedFrames, kTimeOutValue);
-//        if(result!=oboe::Result::OK){
+//        auto result1 = mOutputStream->write(myBuffer, requestedFrames, kTimeOutValue);
+//        if(result1!=oboe::Result::OK){
 //            LOGD("Write  frames error");
 //        }
 //        else{
 //            LOGE("Error Writing Stream");
 //        }
+//        frameRead = result.value();
+//    } while (frameRead!=0);
+
+//    while(true){
+
+
 //    }
 
 
